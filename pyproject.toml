@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "music-mcp"
+version = "1.0.0"
+description = "面向 AI 编曲的 MCP 服务器：MIDI 读写、乐谱分析、乐理知识库资源（纯标准库，零依赖）"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["mcp", "model-context-protocol", "midi", "music", "agent", "dsh"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Sound/Audio :: MIDI",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = []          # ← 刻意为零
+
+[project.scripts]
+music-mcp = "music_mcp.server:run"
+
+[project.urls]
+Homepage = "https://github.com/Jestions-dev"
+
+[tool.setuptools]
+packages = ["music_mcp"]
+
+[tool.setuptools.package-data]
+music_mcp = ["py.typed"]
