@@ -156,6 +156,37 @@ stdio 传输，配置一段即可。注意 **Windows 上不要用 `command: npx`
 
 ---
 
+## 本仓库与运行位置的关系
+
+**GitHub 是源码的主副本**（`Jestions-dev/music-mcp`），
+而 DSH 实际加载的是本机目录 `C:\Users\Jestions\.dsh\music-mcp\`（配置里 `cwd` 指向它）。
+
+改动流程：
+
+```powershell
+# ① 在运行位置改（或从 GitHub 拉下来改），跑测试
+cd C:\Users\Jestions\.dsh\music-mcp
+python -m unittest discover -s tests -t .
+
+# ② 备份目录同步一份（可搬运的干净副本）
+robocopy "C:\Users\Jestions\.dsh\music-mcp" "D:\ForDeepseek\MusicMakerMCP\MCP备份" `
+         /E /XD __pycache__ *.egg-info .git
+
+# ③ 传到 GitHub
+gh api repos/Jestions-dev/music-mcp/contents/<路径> -X PUT --input payload.json
+```
+
+> 注：本机 git 的网络操作受沙箱限制（Windows Schannel 拿不到证书容器），
+> 所以推送走 `gh api` 而不是 `git push`。
+
+在**另一台机器**上要用，只需：
+
+```bash
+git clone https://github.com/Jestions-dev/music-mcp
+cd music-mcp && python -m unittest discover -s tests -t .    # 自检
+python -m music_mcp.server --project "D:/你的音乐项目"
+```
+
 ## 测试
 
 ```bash
